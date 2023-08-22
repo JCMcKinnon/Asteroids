@@ -18,6 +18,9 @@ public class PlayerCollision : MonoBehaviour
     public float invincibleTimer;
     public float invincibleMaxTimer;
 
+    public event Action OnGameOver;
+    public int lifeCounter = 3;
+
     public bool dead;
     public void Awake()
     {
@@ -80,8 +83,11 @@ public class PlayerCollision : MonoBehaviour
             //Instantiate(explosion, transform.position, Quaternion.identity);
             dead = true;
             Instantiate(particles, transform.position, Quaternion.identity);
-
-            
+            lifeCounter--;
+            if(lifeCounter >= 0)
+            {
+                OnGameOver?.Invoke();
+            }
         }
     }
     private void SetInvincible()

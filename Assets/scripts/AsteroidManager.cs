@@ -154,7 +154,9 @@ public class AsteroidManager : MonoBehaviour
     /// events
     /// </summary>
     //-----------------------------------------------------------------------------------------
-    public event Action OnAsteroidsCleared;  
+    public event Action OnAsteroidsCleared;
+    public event Action OnDestroyedLargeAsteroid;
+    public event Action OnDestroyedSmallAsteroid;
 
         private void Awake()
         {
@@ -280,6 +282,7 @@ public class AsteroidManager : MonoBehaviour
                         asteroidsInPlay++;
 
                     }
+                OnDestroyedLargeAsteroid?.Invoke();
                     bigAsteroidPool[i].gameObject.SetActive(false);
                     SpawnParticlesInPlace(bigAsteroidPool[i].gameObject.transform.position);
                     cam.DOShakePosition(0.1f,0.5f,3,30);
@@ -297,6 +300,7 @@ public class AsteroidManager : MonoBehaviour
                 {
                     if (bigAsteroidPool[x].LittleAsteroids[w].asteroidCollision.collided && bigAsteroidPool[x].LittleAsteroids[w].gameObject.activeSelf)
                     {
+                    OnDestroyedSmallAsteroid?.Invoke();
                         SpawnParticlesInPlace(bigAsteroidPool[x].LittleAsteroids[w].gameObject.transform.position);
                         bigAsteroidPool[x].LittleAsteroids[w].gameObject.SetActive(false);
                         asteroidsInPlay--;
